@@ -1,0 +1,10 @@
+{
+    "config": {
+    	"apiKey": "AIzaSyCDS7biKyndh6lJJOExBSm36xvrde87-7g",
+	    "authDomain": "supportusers-90f71.firebaseapp.com",
+	    "databaseURL": "https://supportusers-90f71.firebaseio.com",
+	    "projectId": "supportusers-90f71",
+	    "storageBucket": "supportusers-90f71.appspot.com",
+	    "messagingSenderId": "895161493012"
+	}
+ }
