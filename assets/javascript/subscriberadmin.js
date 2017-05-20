@@ -1,34 +1,27 @@
 /* global firebase moment */
 // Steps to complete:
 
-// 1. Initialize Firebase
+// 1. Get config info
+// 2. Initialize Firebase
 // 2. Dynamically display the subscriber list based on the current records in the database 
 
 var database = null;
+var config = null;
+
+function getDBconnInfo(){
+  $.getJSON('firebase.json', function (data) {
+    config = data.config;
+  })
+    .fail(function(err) {
+      console.log("err");
+      console.log(err.responseText);
+    });
+}
 
 //Initialize Firebase
 function initDB(){
-  var config = {
-    apiKey: "AIzaSyCDS7biKyndh6lJJOExBSm36xvrde87-7g",
-    authDomain: "supportusers-90f71.firebaseapp.com",
-    databaseURL: "https://supportusers-90f71.firebaseio.com",
-    projectId: "supportusers-90f71",
-    storageBucket: "supportusers-90f71.appspot.com",
-    messagingSenderId: "895161493012"
-  };
-
   firebase.initializeApp(config);
   database = firebase.database();
-
-  /*$.getJSON('firebase.json', function (data) {
-      console.log('gotJSON');
-    console.log(data);
-
-  })
-    .fail(function(err) {
-        console.log("err");
-      console.log(err.responseText);
-    })*/
 }
 
 //refresh subscriber list upon record been added in DB
@@ -47,6 +40,18 @@ function addDBAddListener(){
 }
 
 $(document).ready(function(){
+  //need to make sure all the functions can only
+  //start after env config info been received
+  $.ajaxSetup({
+    async: false
+  });
+
+  //Get config info for db connection
+  getDBconnInfo();
+  $.ajaxSetup({
+      async: true
+  });
+
   //Initialize Firebase
   initDB();
 
@@ -64,6 +69,5 @@ $(document).ready(function(){
   database.ref().on('child_removed', function(oldChildSnapshot) {
     //delete table row for the removed record
     $('#'+oldChildSnapshot.key).remove();
-    console.log("removed:" + oldChildSnapshot.key);
   });
 });
